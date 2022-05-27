@@ -1,6 +1,9 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 
-app.listen(8080, function(){
-    console.log('listening on 8080');
+PORT = 8080;
+app.set("views", "./views");
+
+app.listen(PORT, function () {
+  console.log("listening on 8080");
 });
