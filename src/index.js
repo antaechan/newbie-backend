@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const teamRouter = require("./routes/team");
+const matchRouter = require("./routes/match");
 
 // server port, mongodb url
 const PORT = 8080;
@@ -22,6 +23,7 @@ app.use(express.json());
 
 //Middleware
 app.use("/team", teamRouter);
+app.use("/match", matchRouter);
 
 // connect to MongoDB
 const connect = () => {
