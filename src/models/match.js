@@ -13,7 +13,7 @@ const OSchemaDefinition = {
   },
   date: {
     type: Date,
-    default: new Date(),
+    default: new Date(2022, 11, 31),
   },
 };
 

@@ -6,7 +6,6 @@ const router = express.Router();
 router.get("/showMatches", async (req, res) => {
   try {
     const matchsData = await MatchModel.find({});
-    console.log("matchsData:", matchsData);
     // send response as JSON format {data: teamsData, status: 200, ...}
     return res.status(200).json(matchsData);
   } catch (e) {
@@ -14,10 +13,33 @@ router.get("/showMatches", async (req, res) => {
   }
 });
 
-router.post("/updateMatch", async (req, res) => {
+router.post("/updateMatchScore", async (req, res) => {
   try {
-    const { id } = req.body;
-    const succ = await MatchModel.updateOne({ _id: id });
+    const { id, team1Score, team2Score } = req.body;
+    const succ = await MatchModel.updateOne(
+      { _id: id },
+      { $set: { team1Score: team1Score, team2Score: team2Score } }
+    );
+    return res.status(200).json({ isOk: true });
+  } catch (e) {
+    return res.status(500).json({ error: e });
+  }
+});
+
+router.post("/updateMatchDate", async (req, res) => {
+  try {
+    const { id, date } = req.body;
+    // console.log(date);
+    // console.log(typeof date);
+    const year = parseInt(date.substring(0, 4));
+    const month = parseInt(date.substring(5, 7));
+    const day = parseInt(date.substring(8, 10));
+    const hour = parseInt(date.substring(11, 13));
+    const minute = parseInt(date.substring(14));
+    const succ = await MatchModel.updateOne(
+      { _id: id },
+      { $set: { date: new Date(year, month - 1, day, hour, minute) } }
+    );
     return res.status(200).json({ isOk: true });
   } catch (e) {
     return res.status(500).json({ error: e });
