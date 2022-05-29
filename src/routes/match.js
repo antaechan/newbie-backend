@@ -1,5 +1,6 @@
 const express = require("express");
 const MatchModel = require("../models/match");
+const TeamModel = require("../models/team");
 
 const router = express.Router();
 
@@ -13,13 +14,28 @@ router.get("/showMatches", async (req, res) => {
   }
 });
 
+router.get("/showPreMatches", async (req, res) => {
+  try {
+    const matchsData = await MatchModel.find({
+      date: { $lte: new Date() },
+    });
+
+    return res.status(200).json(matchsData);
+  } catch (e) {
+    return res.status(500).json({ error: e });
+  }
+});
+
 router.post("/updateMatchScore", async (req, res) => {
   try {
     const { id, team1Score, team2Score } = req.body;
-    const succ = await MatchModel.updateOne(
+
+    // update Match DB team1Score, team2Score
+    const succ2 = await MatchModel.updateOne(
       { _id: id },
       { $set: { team1Score: team1Score, team2Score: team2Score } }
     );
+
     return res.status(200).json({ isOk: true });
   } catch (e) {
     return res.status(500).json({ error: e });
