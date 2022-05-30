@@ -4,9 +4,6 @@ const cors = require("cors");
 
 const teamRouter = require("./routes/team");
 const matchRouter = require("./routes/match");
-const app = express();
-
-app.use(cors());
 
 // server port, mongodb url
 const PORT = 8080;
@@ -33,11 +30,14 @@ db.once("open", handleOpen);
 db.once("error", handleError);
 db.once("disconnected", connect);
 
+const app = express();
+
 // server CORS handling
-// const corsOptions = {
-//   origin: true,
-//   credentials: true,
-// };
+const corsOptions = {
+  origin: true,
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 // parses incoming JSON requests and puts the parsed data in req.body
 app.use(express.json());
