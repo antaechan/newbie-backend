@@ -8,22 +8,8 @@ const matchRouter = require("./routes/match");
 // server port, mongodb url
 const PORT = 8080;
 const MONGO_URI = "mongodb://127.0.0.1:27017/newbie";
-
-const app = express();
-
-// server CORS handling
-const corsOptions = {
-  origin: true,
-  credentials: true,
-};
-app.use(cors(corsOptions));
-
-// parses incoming JSON requests and puts the parsed data in req.body
-app.use(express.json());
-
-//Middleware
-app.use("/team", teamRouter);
-app.use("/match", matchRouter);
+// "mongodb://127.0.0.1:27017/newbie"
+// "mongodb://sparcs:tnfqkrtm@ssal.sparcs.org:52190?authSource=admin";
 
 // connect to MongoDB
 const connect = () => {
@@ -43,6 +29,22 @@ const handleError = (error) => console.log(`disconnected: ${error}`);
 db.once("open", handleOpen);
 db.once("error", handleError);
 db.once("disconnected", connect);
+
+const app = express();
+
+// server CORS handling
+const corsOptions = {
+  origin: true,
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
+// parses incoming JSON requests and puts the parsed data in req.body
+app.use(express.json());
+
+//Middleware
+app.use("/team", teamRouter);
+app.use("/match", matchRouter);
 
 // Implement Server
 app.listen(PORT, function () {
